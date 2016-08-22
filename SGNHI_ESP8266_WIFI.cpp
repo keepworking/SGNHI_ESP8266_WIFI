@@ -41,30 +41,14 @@ void sgnDev::init(char *id,char *devcode/*,IPAddress local_ip*/){
 	DEBUG_PRINT(devCode);
 }
 
-/*void sgnDev::init(){
-	if(Ethernet.begin(mac) == 0){
-		DEBUG_PRINT("fail using dhcp")
-		Ethernet.begin(mac,addr);
-	}
-}*/
 
 void sgnDev::setRest(unsigned long rest){
 	restTime = rest < REST? REST:rest;
 }
 
-/*void sgnDev::setmac(byte a,byte b,byte c,byte d,byte e,byte f){
-	mac[0] = a;
-	mac[1] = b;
-	mac[2] = c;
-	mac[3] = d;
-	mac[4] = e;
-	mac[5] = f;
-}*/
-
-
 
 int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> 수정완료.
-	
+  	WiFi.waitForConnectResult();
 	//return 1;
 	//send value code 아래쪽 부터.
 	unsigned long now = millis();
@@ -85,10 +69,10 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
 		return sgnhi_EWIFI;
 	}
 	
-	WiFiClient client;//
+	WiFiClient client;//클라이언트 객체 생성.
 	
 	if (client.connect(SERVER, 80)) {
-		DEBUG_PRINT("connected");
+		//DEBUG_PRINT("connected");
 		//client.flush();
 		client.print("GET /iot/iot_up.php?");
 		client.print("uid=");client.print(ID);
@@ -133,12 +117,22 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
 		client.stop();
   		DEBUG_PRINT("connection failed");
   		DEBUG_PRINT("try to begin");
-  		//init(); esp에서는 dhcp요청을, begin에서함!
-  		WiFi.begin();
+  		//esp에서는 dhcp요청을, begin에서함!
+  		//wifi_station_dhcpc_start(); 함수가. 있음.
+  		WiFi.begin();// <--
   		state = 0;
   		return sgnhi_ERROR;
   	}
   	return sgnhi_OK;
 }
+/*
+---- send함수 return type ----
+#define sgnhi_OK 0 // 서버에 데이터 전송. 성공. <-- 아직 홈페이지의 리퀘스트를 확인하지 않음.
+#define sgnhi_WAIT 1 // 서버에 전송한지 대기시간이 지나지 않음, 좀더 뒤에 전송 요망.
+#define sgnhi_ERROR 2 // 웹사이트에 접속 실패.
+--네트워크 연결 오류나, DHCP서버에서 IP를 할당 받지 못할경우, 해당에러 발생.
+-- esp8266에서는 WiFi.begin(); 으로 dhcp요청을 함.
+#define sgnhi_EWIFI 3 //와이파이 연결에 문제 있음. <-- 함수내에서 reconnect를 시도.
+*/
 
-sgnDev dev;
+sgnDev dev;//dev객체 미리 생성.

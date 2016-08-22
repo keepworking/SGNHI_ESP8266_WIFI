@@ -8,7 +8,7 @@
     #include "Arduino.h"
 #endif
 
-#define SERVER "veyrobotics.cafe24.com"
+#define SERVER "veyrobotics.cafe24.com"//서버 도메인.
 
 #define atInt 1
 #define atFloat 2
@@ -21,8 +21,10 @@
 #define sgnhi_EWIFI 3 //와이파이 연결에 문제 있음.
 
 #define MACHTYPE(v,t) (t == atInt?*(int*)v:(t == atFloat?*(float*)v:(t == atDouble?*(double*)v:(t == atLong?*(long*)v:0))))
+//값을 업로드할때, 다양한 형식의 변수를 지원하기 위함.
 
-#define REST 1000 * 60 * 10 // 10분
+
+#define REST 1000 * 60 * 10 // 10분 기본, 최소 업데이트 주기.
 
 //#define DEBUG
 
