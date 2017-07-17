@@ -120,6 +120,7 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
   		//esp에서는 dhcp요청을, begin에서함!
   		//wifi_station_dhcpc_start(); 함수가. 있음.
   		// WiFi.begin();// <-- wifi begin 은 아닌듯
+
   		state = 0;
   		return sgnhi_ERROR;
   	}
