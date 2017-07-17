@@ -68,9 +68,9 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
 		WiFi.reconnect();//연결이 끊겼을 시 재시도.
 		return sgnhi_EWIFI;
 	}
-	
+
 	WiFiClient client;//클라이언트 객체 생성.
-	
+
 	if (client.connect(SERVER, 80)) {
 		//DEBUG_PRINT("connected");
 		//client.flush();
@@ -119,7 +119,7 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
   		DEBUG_PRINT("try to begin");
   		//esp에서는 dhcp요청을, begin에서함!
   		//wifi_station_dhcpc_start(); 함수가. 있음.
-  		WiFi.begin();// <--
+  		// WiFi.begin();// <-- wifi begin 은 아닌듯
   		state = 0;
   		return sgnhi_ERROR;
   	}

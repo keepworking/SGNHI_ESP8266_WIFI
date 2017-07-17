@@ -24,9 +24,9 @@
 //값을 업로드할때, 다양한 형식의 변수를 지원하기 위함.
 
 
-#define REST 1000 * 60 * 10 // 10분 기본, 최소 업데이트 주기.
+#define REST 1000 * 10 * 60// 10분 기본, 최소 업데이트 주기.
 
-//#define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
  #define DEBUG_PRINT(x) Serial.println(x)
@@ -52,7 +52,7 @@ public:
 	//
 	//vvoid setvalue(void *val);
 private:
-	
+
 };
 
 
