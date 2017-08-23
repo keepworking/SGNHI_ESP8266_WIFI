@@ -28,9 +28,10 @@ void dotori::set(long val){
 }
 
 void dotori::set(double val){
-	void * vo = &val;
+  float myval = (float)val;
+	void * vo = &myval;
 	value = *(uint32_t*)vo;
-	argType = atDouble;
+	argType = atfloat;
 }
 
 void sgnDev::init(char *id,char *devcode/*,IPAddress local_ip*/){
@@ -86,7 +87,7 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
 			client.print("&sc");client.print(cnt);client.print("=");
 			client.print(m.senCode);
 			client.print("&sv");client.print(cnt);client.print("=");
-			client.print(MACHTYPE(vo,m.argType));
+			client.print(MACHTYPE(vo,m.argType),10);
 			//
 			/*#ifdef DEBUG
 			Serial.print("&sc");Serial.print(cnt);Serial.print("=");
