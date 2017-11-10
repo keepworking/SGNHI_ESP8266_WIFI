@@ -31,7 +31,7 @@ void dotori::set(double val){
   float myval = (float)val;
 	void * vo = &myval;
 	value = *(uint32_t*)vo;
-	argType = atfloat;
+	argType = atFloat;
 }
 
 void sgnDev::init(char *id,char *devcode/*,IPAddress local_ip*/){
