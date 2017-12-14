@@ -63,6 +63,7 @@ class sgnDev {
 public:
 	void init(char *id,char *devCode);
 	int send(dotori mdotori,...);
+  int mail(char *,char *);
 	void setRest(unsigned long rest);
 private:
 	char* ID;

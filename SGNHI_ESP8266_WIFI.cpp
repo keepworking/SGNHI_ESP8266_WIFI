@@ -28,7 +28,7 @@ void dotori::set(long val){
 }
 
 void dotori::set(double val){
-  float myval = (float)val;
+	float myval = (float)val;
 	void * vo = &myval;
 	value = *(uint32_t*)vo;
 	argType = atFloat;
@@ -47,9 +47,37 @@ void sgnDev::setRest(unsigned long rest){
 	restTime = rest < REST? REST:rest;
 }
 
+int sgnDev::mail(char *subject,char *text){
+	WiFi.waitForConnectResult();
+	if(!WiFi.isConnected()){//와이파이 연결 상태 확인.
+		WiFi.reconnect();//연결이 끊겼을 시 재시도.
+		return sgnhi_EWIFI;
+	}
+	WiFiClient client;
+	if (client.connect(SERVER, 80)) {
+		client.print("GET /iot/iot_mail.php?");
+		client.print("uid=");client.print(ID);
+		client.print("&dc=");client.print(devCode);
+		client.print("&ms=");client.print(subject);
+		client.print("&mt=");client.print(text);
+		client.print(" HTTP/1.0\r\n");
+		client.print("Host:sgnhi.org \r\n");
+		client.print("User-Agent: sgnhi\r\n");
+		client.print("Connection: close\r\n");
+		client.println();
+		client.stop();
+	}
+	else{
+		client.stop();
+		return sgnhi_ERROR;
+	}
+	return sgnhi_OK;
+
+}
+
 
 int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> 수정완료.
-  	WiFi.waitForConnectResult();
+	WiFi.waitForConnectResult();
 	//return 1;
 	//send value code 아래쪽 부터.
 	unsigned long now = millis();
@@ -116,16 +144,16 @@ int sgnDev::send(dotori mdotori, ...){//iot_up 소스코드 수정해야함 -> �
 	else {
 		Serial.println(client.status());
 		client.stop();
-  		DEBUG_PRINT("connection failed");
-  		DEBUG_PRINT("try to begin");
-  		//esp에서는 dhcp요청을, begin에서함!
-  		//wifi_station_dhcpc_start(); 함수가. 있음.
-  		// WiFi.begin();// <-- wifi begin 은 아닌듯
+		DEBUG_PRINT("connection failed");
+		DEBUG_PRINT("try to begin");
+		//esp에서는 dhcp요청을, begin에서함!
+		//wifi_station_dhcpc_start(); 함수가. 있음.
+		// WiFi.begin();// <-- wifi begin 은 아닌듯
 
-  		state = 0;
-  		return sgnhi_ERROR;
-  	}
-  	return sgnhi_OK;
+		state = 0;
+		return sgnhi_ERROR;
+	}
+	return sgnhi_OK;
 }
 /*
 ---- send함수 return type ----
